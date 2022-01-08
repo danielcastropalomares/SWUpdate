@@ -1,0 +1,14 @@
+software =
+{
+	version = "1.0.1";
+   	danimachine = { 
+        	hardware-compatibility: [ "1.0" ];
+        	files: (
+        	    {
+        	        filename = "SWUpdate";
+        	        path = "/SWUpdate";
+			sha256 = "784b08579a34d94202c2a65b448ab364354cd3a219762d527c559da55e918da2";
+        	    }
+        	);
+	};
+}
