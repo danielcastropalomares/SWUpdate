@@ -1,10 +1,9 @@
 # SWUpdate
 Tested in a Debian 11:
 
-Download swupdate from oficial repository:
+Download swupdate from oficial repository and compile:
 
 ```
-
 cd /usr/local/src
 git clone https://github.com/sbabic/swupdate.git  && cd swupdate
 make test_defconfig
@@ -19,6 +18,11 @@ openssl genrsa -out swupdate-priv.pem
 openssl rsa -in swupdate-priv.pem -out swupdate-public.pem -outform PEM -pubout
 ```
 
+Clone this repository and access to folder:
+```
+git clone https://github.com/danielcastropalomares/SWUpdate.git
+cd SWUpdate
+```
 Create a signature for sw-description
 ```
 openssl dgst -sha256 -sign /usr/local/src/swupdate/swupdate-priv.pem sw-description > sw-description.sig
@@ -30,17 +34,25 @@ Create the file .swu
  for i in $FILES; do echo $i; done | cpio -ov -H crc >  update-image-v1.swu
 ```
 
-# Install
-In target machine, we need create a file to specify the model. With this file, the swupdate check the package version of the .swu and the system:
+# Install SWU package
+In target machine, repeat the process of the install swupdate.
+
+Now need create a file to specify the model. With this file, the swupdate check the package version of the .swu and the system:
 ```
 cat /etc/hwrevision
 danimachine 1.0
 ```
-Install the swu package:
+Install the swu package via CLI:
 
 ```
  swupdate -v -k /usr/local/src/swupdate/swupdate-public.pem -i update-image-v1.swu 
 ```
+
+Optional: In other way, you can start a webserver to upload the firmware via web:
+```
+swupdate -v -k /usr/local/src/swupdate/swupdate-public.pem -w '-r /usr/local/src/swupdate/examples/www/v2 -p 8081' -p 'echo reboot'
+```
+
 
 The output:
 
